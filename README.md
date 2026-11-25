@@ -24,7 +24,6 @@ assets/
   js/analytics.js       Google Analytics 4 loader and sbTrack()
   js/common.js          Shared code: validation, drafts, API client, submit, errors
   js/pages/*.js         Logic for each form
-CHANGELOG.md            History of every change
 ```
 
 Each form loads its scripts in this order: `config.js` → `analytics.js` → an inline `SB = { api, page }` → `common.js` → `pages/<form>.js`.
@@ -35,7 +34,7 @@ Each form loads its scripts in this order: `config.js` → `analytics.js` → an
 2. On page load the form calls `POST /v1/token/decrypt`. The Enquiry and Stock forms then call `GET /v1/member` to fill in the member's details.
 3. On submit the form sends JSON to `POST /v1/register`, `/v1/lead` or `/v1/stock`.
 
-Every API call sends the token in the `X-Form-Token` header. See [CHANGELOG.md](CHANGELOG.md) for the full list of endpoints, request bodies and UTM links.
+Every API call sends the token in the `X-Form-Token` header. Endpoints used: `POST /v1/token/decrypt`, `GET /v1/member`, `POST /v1/register`, `POST /v1/lead`, `POST /v1/stock`.
 
 ## Configuration
 
@@ -74,4 +73,4 @@ Only the form kind and the HTTP status are sent to Google Analytics. The token, 
 
 ## Contributing
 
-No change is made without the owner's approval. Record every change in `CHANGELOG.md`, newest first.
+No change is made without the owner's approval.
