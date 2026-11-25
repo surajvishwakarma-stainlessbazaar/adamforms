@@ -5,6 +5,6 @@
    POST /v1/register, POST /v1/lead, POST /v1/stock. Auth: header X-Form-Token = ?encrypted_token= from the link.
    gaId: GA4 measurement ID (analytics.js). */
 var SB_CONFIG = {
-  api: "https://stagingevolveapi.stainlessbazaar.com",
-  gaId: "G-Q782SD58XK", /* Google Analytics 4 measurement ID; empty = analytics off */
+  api: "https://d315dphukdscum.cloudfront.net",
+  gaId: "G-Q782SD58XK" /* Google Analytics 4 measurement ID; empty = analytics off */,
 };
