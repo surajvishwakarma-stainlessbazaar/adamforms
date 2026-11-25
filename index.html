@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script src="assets/js/config.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Stainless Bazaar</title>
+    <script>
+      /*
+  Scenario router. Sends the visitor to the right page and keeps the query
+  string (m = mobile, t = token, etc.) so each page still pre-fills.
+
+  Ways to call it:
+    /?p=register&m=9876543210        -> /register/?m=9876543210
+    /?p=lead&m=...&t=...             -> /lead/?m=...&t=...
+    /?p=stock&m=...&t=...            -> /stock/?m=...&t=...
+    /#lead                           -> /lead/
+  Aliases: enquiry, price, quote -> lead ; sell, list, listing -> stock ; signup, join -> register
+  No/unknown p: user with a token (t) -> lead ; otherwise -> register
+*/
+      (function () {
+        var ROUTES = {
+          register: "register",
+          signup: "register",
+          join: "register",
+          lead: "lead",
+          enquiry: "lead",
+          price: "lead",
+          quote: "lead",
+          stock: "stock",
+          sell: "stock",
+          list: "stock",
+          listing: "stock",
+        };
+        var q = new URLSearchParams(location.search);
+        var key = (q.get("p") || q.get("page") || location.hash.slice(1) || "").toLowerCase();
+        q.delete("p");
+        q.delete("page");
+        var dest = ROUTES[key] || (q.get("t") ? "lead" : null);
+        if (!dest) return; // show the menu below
+        var qs = q.toString();
+        window.__sbRedirecting = true; /* skip analytics: the target page records the visit */
+        location.replace(dest + "/" + (qs ? "?" + qs : ""));
+      })();
+    </script>
+    <script src="assets/js/analytics.js"></script>
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --fg: #1a1d21;
+        --card: #fff;
+        --line: #dde1e6;
+        --acc: #0b6e4f;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #111315;
+          --fg: #e8eaed;
+          --card: #1b1e21;
+          --line: #2c3035;
+          --acc: #3fbf8f;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 420px;
+        margin: 0 auto;
+        padding: 40px 16px;
+      }
+      a {
+        display: block;
+        padding: 16px;
+        margin: 10px 0;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      a b {
+        color: var(--acc);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Stainless Bazaar</h1>
+      <a href="register/"><b>Register</b><br />New member sign-up</a>
+      <a href="lead/"><b>Ask for a price</b><br />Send a buying enquiry</a>
+      <a href="stock/"><b>List your stock</b><br />Post material for sale</a>
+    </main>
+  </body>
+</html>

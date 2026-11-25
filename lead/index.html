@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/analytics.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#D42A30" />
+    <meta name="robots" content="noindex" />
+    <title>Ask for a price | Stainless Bazaar</title>
+    <link rel="icon" href="../assets/img/logo.webp" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <meta property="og:title" content="Ask for a price | Stainless Bazaar" />
+    <meta
+      property="og:description"
+      content="Stainless steel ka best B2B price paayein. Form bharein, team turant contact karegi."
+    />
+    <meta
+      property="og:url"
+      content="https://sb-enquiry-form-2026.s3.ap-south-1.amazonaws.com/lead/index.html"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://stainlessbazaar.com/cdn/shop/files/Digitial_Banner_6b59a075-d1be-4f37-8655-4f8133ca0b95_825x254.jpg"
+    />
+
+    <meta property="og:image:width" content="825" />
+    <meta property="og:image:height" content="254" />
+    <meta property="og:image:alt" content="Stainless Bazaar – Ask for a price" />
+  </head>
+  <body>
+    <header class="top">
+      <img
+        class="logo"
+        src="../assets/img/logo.webp"
+        width="32"
+        height="32"
+        alt=""
+        onerror="this.outerHTML = '<span class=&quot;logo t&quot;>SB</span>'"
+      /><b>Stainless Bazaar</b><span class="pg">Ask for a price</span>
+    </header>
+    <main class="wrap">
+      <h1>Ask for a price</h1>
+      <p class="lede">Tell us what you need. Sellers quote you, usually the same day.</p>
+      <p class="who" id="who" hidden></p>
+      <div class="dev" id="dev" style="display: none">
+        Preview mode: nothing is sent and addresses are samples. Set <code>SB.api</code> in the
+        script to connect to your CRM.
+      </div>
+      <form id="f" novalidate autocomplete="on">
+        <div class="neterr" id="neterr" role="alert">
+          No connection. Tap the button to try again.
+        </div>
+        <section class="card">
+          <h2><i>1</i>What do you need?</h2>
+          <div class="f">
+            <label class="lb" for="cat">Product category</label
+            ><select id="cat" name="cat"></select>
+            <div class="err" id="e-cat" role="alert"></div>
+          </div>
+          <div class="f">
+            <label class="lb" for="pname">Product name</label
+            ><input
+              id="pname"
+              name="pname"
+              type="text"
+              placeholder="e.g. 304 CR Coil, 202 Sheet"
+              autocomplete="off"
+            />
+            <div class="err" id="e-pname" role="alert"></div>
+          </div>
+          <div class="f" role="radiogroup" aria-label="Make / brand">
+            <span class="lb">Make / brand</span>
+            <div class="chips" id="brandc"></div>
+            <div class="err" id="e-brand" role="alert"></div>
+          </div>
+          <div class="f" role="radiogroup" aria-label="Grade">
+            <span class="lb">Grade</span>
+            <div class="chips" id="gradec"></div>
+            <div class="hint" id="gradeh">Pick make / brand first.</div>
+            <div class="err" id="e-grade" role="alert"></div>
+          </div>
+          <div class="f">
+            <label class="lb" for="sub">Sub grade</label
+            ><select id="sub" name="sub" disabled></select>
+            <div class="err" id="e-sub" role="alert"></div>
+          </div>
+          <div class="f">
+            <label class="lb" for="days">Delivery in days</label
+            ><input
+              id="days"
+              name="days"
+              type="tel"
+              placeholder="e.g. 7"
+              inputmode="numeric"
+              maxlength="3"
+              data-d
+            />
+            <div class="err" id="e-days" role="alert"></div>
+          </div>
+          <div class="f">
+            <label class="lb" for="desc">More details <small>(optional)</small></label
+            ><textarea id="desc" name="desc" placeholder="Anything a seller should know"></textarea>
+          </div>
+        </section>
+        <section class="card">
+          <h2><i>2</i>Sizes</h2>
+          <p class="hint" style="margin: -4px 0 10px">
+            Each size carries its own price and quantity.
+          </p>
+          <div id="sizes"></div>
+          <button type="button" class="btn sec" id="addsize">+ Add another size</button>
+        </section>
+        <section class="card">
+          <h2><i>3</i>Delivery address</h2>
+          <p class="hint" style="margin: -4px 0 10px">
+            From your account. Pick one or add a new one.
+          </p>
+          <div class="f" id="addrwrap">
+            <div id="addrs" role="radiogroup" aria-label="Delivery address"></div>
+            <div class="hint" id="addrnote" aria-live="polite"></div>
+            <div id="na" hidden style="margin-top: 10px">
+              <div class="f">
+                <label class="lb" for="nline">Address</label
+                ><textarea
+                  id="nline"
+                  name="nline"
+                  placeholder="Plot, street, area, landmark"
+                  autocomplete="street-address"
+                ></textarea>
+                <div class="err" id="e-nline" role="alert"></div>
+              </div>
+              <div class="f">
+                <label class="lb" for="npin">Pincode</label
+                ><input
+                  id="npin"
+                  name="npin"
+                  type="tel"
+                  placeholder="6 digits"
+                  inputmode="numeric"
+                  maxlength="6"
+                  data-d
+                  autocomplete="postal-code"
+                />
+                <div class="err" id="e-npin" role="alert"></div>
+              </div>
+              <div class="row">
+                <div class="f">
+                  <label class="lb" for="ncity">City <small>(optional)</small></label
+                  ><input id="ncity" name="ncity" type="text" placeholder="Filled from pincode" />
+                  <div class="err" id="e-ncity" role="alert"></div>
+                </div>
+                <div class="f">
+                  <label class="lb" for="nstate">State <small>(optional)</small></label
+                  ><input id="nstate" name="nstate" type="text" placeholder="Filled from pincode" />
+                  <div class="err" id="e-nstate" role="alert"></div>
+                </div>
+              </div>
+            </div>
+            <div class="err" id="e-addr" role="alert" style="margin-top: 6px"></div>
+          </div>
+        </section>
+        <div class="bar">
+          <button class="btn" id="go" type="submit">Send enquiry</button>
+          <p class="fine">Takes about 2 minutes. Works on slow networks.</p>
+        </div>
+      </form>
+      <section class="card ok" id="ok" aria-live="polite">
+        <div class="tick" aria-hidden="true">&#10003;</div>
+        <h2>Enquiry received</h2>
+        <p>Matching sellers will send you quotes, usually the same day, on WhatsApp.</p>
+        <p>Reference <span class="ref" id="ref"></span></p>
+        <ul class="sum" id="sum"></ul>
+        <p class="fine" style="text-align: left; margin-top: 12px">
+          You can close this page and go back to WhatsApp.
+        </p>
+      </section>
+    </main>
+
+    <script>
+      var SB = { api: SB_CONFIG.api, page: "enquiry" };
+    </script>
+    <script src="../assets/js/common.js"></script>
+    <script src="../assets/js/pages/lead.js"></script>
+  </body>
+</html>

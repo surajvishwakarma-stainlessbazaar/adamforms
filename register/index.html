@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/analytics.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#D42A30" />
+    <meta name="robots" content="noindex" />
+    <title>Register | Stainless Bazaar</title>
+    <link rel="icon" href="../assets/img/logo.webp" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <meta property="og:title" content="Register | Stainless Bazaar" />
+    <meta property="og:description" content="Register for a price | Stainless Bazaar" />
+    <meta
+      property="og:url"
+      content="https://sb-enquiry-form-2026.s3.ap-south-1.amazonaws.com/register/index.html"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://stainlessbazaar.com/cdn/shop/files/Digitial_Banner_6b59a075-d1be-4f37-8655-4f8133ca0b95_825x254.jpg"
+    />
+
+    <meta property="og:image:width" content="825" />
+    <meta property="og:image:height" content="254" />
+    <meta property="og:image:alt" content="Stainless Bazaar – Ask for a price" />
+  </head>
+  <body>
+    <header class="top">
+      <img
+        class="logo"
+        src="../assets/img/logo.webp"
+        width="32"
+        height="32"
+        alt=""
+        onerror="this.outerHTML = '<span class=&quot;logo t&quot;>SB</span>'"
+      /><b>Stainless Bazaar</b><span class="pg">Register</span>
+    </header>
+    <main class="wrap">
+      <h1>Create your account</h1>
+      <p class="lede">Register once to buy, sell and track orders on Stainless Bazaar.</p>
+      <p class="who" id="who" hidden></p>
+      <div class="dev" id="dev" style="display: none">
+        Preview mode: nothing is sent and addresses are samples. Set <code>SB.api</code> in the
+        script to connect to your CRM.
+      </div>
+      <form id="f" novalidate autocomplete="on">
+        <div class="neterr" id="neterr" role="alert">
+          No connection. Tap the button to try again.
+        </div>
+        <section class="card">
+          <h2><i>1</i>Your business</h2>
+          <div class="f" role="radiogroup" aria-label="Business type">
+            <span class="lb">Business type</span>
+            <div class="chips">
+              <label
+                ><input type="radio" name="btype" value="Manufacturer" /><span
+                  >Manufacturer</span
+                ></label
+              ><label
+                ><input type="radio" name="btype" value="Stockist" /><span>Stockist</span></label
+              ><label
+                ><input type="radio" name="btype" value="End-user" /><span>End-user</span></label
+              ><label
+                ><input type="radio" name="btype" value="Service centre / OEM" /><span
+                  >Service centre / OEM</span
+                ></label
+              ><label><input type="radio" name="btype" value="Trader" /><span>Trader</span></label
+              ><label
+                ><input type="radio" name="btype" value="Processor" /><span>Processor</span></label
+              ><label
+                ><input type="radio" name="btype" value="Transporter" /><span
+                  >Transporter</span
+                ></label
+              >
+            </div>
+            <div class="err" id="e-btype" role="alert"></div>
+          </div>
+          <div class="f" role="radiogroup" aria-label="I want to">
+            <span class="lb">I want to</span>
+            <div class="chips">
+              <label><input type="radio" name="intent" value="Buy" /><span>Buy</span></label
+              ><label><input type="radio" name="intent" value="Sell" /><span>Sell</span></label
+              ><label
+                ><input type="radio" name="intent" value="Buy and sell" /><span
+                  >Buy and sell</span
+                ></label
+              >
+            </div>
+            <div class="err" id="e-intent" role="alert"></div>
+          </div>
+          <div class="f">
+            <label class="lb" for="company">Company name</label
+            ><input
+              id="company"
+              name="company"
+              type="text"
+              placeholder="As on your GST certificate"
+              autocomplete="organization"
+            />
+            <div class="err" id="e-company" role="alert"></div>
+          </div>
+          <div class="f">
+            <label class="lb" for="name">Customer name</label
+            ><input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Your full name"
+              autocomplete="name"
+            />
+            <div class="err" id="e-name" role="alert"></div>
+          </div>
+        </section>
+        <section class="card">
+          <h2><i>2</i>Location</h2>
+          <button type="button" class="btn sec det" id="det">&#9678; Detect my location</button>
+          <div class="hint" id="dmsg" aria-live="polite">Or type your pincode below.</div>
+          <div style="height: 10px"></div>
+          <div class="f">
+            <label class="lb" for="pincode">Pincode</label
+            ><input
+              id="pincode"
+              name="pincode"
+              type="tel"
+              placeholder="6 digits"
+              inputmode="numeric"
+              maxlength="6"
+              data-d
+              autocomplete="postal-code"
+            />
+            <div class="err" id="e-pincode" role="alert"></div>
+          </div>
+          <div class="row">
+            <div class="f">
+              <label class="lb" for="city">City <small>(optional)</small></label
+              ><input
+                id="city"
+                name="city"
+                type="text"
+                placeholder="Filled from pincode"
+                autocomplete="address-level2"
+              />
+              <div class="err" id="e-city" role="alert"></div>
+            </div>
+            <div class="f">
+              <label class="lb" for="state">State <small>(optional)</small></label
+              ><input
+                id="state"
+                name="state"
+                type="text"
+                placeholder="Filled from pincode"
+                autocomplete="address-level1"
+              />
+              <div class="err" id="e-state" role="alert"></div>
+            </div>
+          </div>
+        </section>
+        <section class="card">
+          <h2><i>3</i>Identification details</h2>
+          <p class="hint" style="margin: -4px 0 10px">
+            Optional. Your mobile number comes from WhatsApp.
+          </p>
+          <div class="f">
+            <label class="lb" for="mobile">Mobile number</label
+            ><input
+              id="mobile"
+              name="mobile"
+              type="tel"
+              placeholder="10-digit number"
+              inputmode="numeric"
+              maxlength="10"
+              data-d
+              autocomplete="tel-national"
+            />
+            <div class="hint" id="h-mobile">Your WhatsApp number</div>
+            <div class="err" id="e-mobile" role="alert"></div>
+          </div>
+          <div class="f">
+            <label class="lb" for="email">Email <small>(optional)</small></label
+            ><input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="name@company.com"
+              autocomplete="email"
+            />
+            <div class="err" id="e-email" role="alert"></div>
+          </div>
+          <div class="f">
+            <label class="lb" for="gstin">GSTIN <small>(optional)</small></label
+            ><input
+              id="gstin"
+              name="gstin"
+              type="text"
+              placeholder="15-character GSTIN"
+              maxlength="15"
+              autocapitalize="characters"
+              autocomplete="off"
+            />
+            <div class="hint" id="h-gstin">Add it to get verified faster.</div>
+            <div class="err" id="e-gstin" role="alert"></div>
+          </div>
+        </section>
+        <section class="card">
+          <div class="f" style="margin: 0">
+            <label class="chk"
+              ><input type="checkbox" name="cons" id="cons" /><span
+                >I agree to be contacted on WhatsApp, call and SMS about my account, enquiries and
+                orders.</span
+              ></label
+            >
+            <div class="err" id="e-cons" role="alert"></div>
+          </div>
+        </section>
+        <div class="bar">
+          <button class="btn" id="go" type="submit">Register</button>
+          <p class="fine">Takes about 2 minutes. Works on slow networks.</p>
+        </div>
+      </form>
+      <section class="card ok" id="ok" aria-live="polite">
+        <div class="tick" aria-hidden="true">&#10003;</div>
+        <h2>You are registered</h2>
+        <p>Thank you. Our team will confirm your details on WhatsApp.</p>
+        <p>Reference <span class="ref" id="ref"></span></p>
+        <ul class="sum" id="sum"></ul>
+        <p class="fine" style="text-align: left; margin-top: 12px">
+          You can close this page and go back to WhatsApp.
+        </p>
+      </section>
+    </main>
+    <script>
+      var SB = { api: SB_CONFIG.api, page: "register" };
+    </script>
+    <script src="../assets/js/common.js"></script>
+    <script src="../assets/js/pages/register.js"></script>
+  </body>
+</html>
