@@ -39,19 +39,14 @@ Every API call sends the token in the `X-Form-Token` header. See [CHANGELOG.md](
 
 ## Configuration
 
-Settings live in a `.env` file, which is not committed. `assets/js/config.js` is generated from it.
+Edit `assets/js/config.js`:
 
-1. Copy `.env.example` to `.env` and fill in the values.
-2. Run `node scripts/build-config.mjs` (Node 18 or later, no install needed).
+| Setting | Meaning |
+|---|---|
+| `api` | Form API base URL, no trailing slash. Leave it empty for demo mode, which makes no network calls and shows sample data. |
+| `gaId` | GA4 measurement ID. Leave it empty to turn analytics off. |
 
-| Variable | Becomes | Meaning |
-|---|---|---|
-| `SB_API_URL` | `SB_CONFIG.api` | Form API base URL, no trailing slash. Leave it empty for demo mode, which makes no network calls and shows sample data. |
-| `SB_GA_ID` | `SB_CONFIG.gaId` | GA4 measurement ID. Leave it empty to turn analytics off. |
-
-Real environment variables override `.env`, so a CI or hosting build can run `SB_API_URL=... node scripts/build-config.mjs` before deploying.
-
-These values end up in `config.js`, which the browser downloads, so they are not hidden from visitors. Never put a real secret (API keys, passwords) in them. Secrets belong on the Form API server.
+The browser downloads `config.js`, so these values are visible to visitors. Neither is a secret. Never put a real secret (API keys, passwords) in this site. Secrets belong on the Form API server.
 
 ## Running locally
 
