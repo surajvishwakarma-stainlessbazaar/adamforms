@@ -35,3 +35,7 @@ build/
 *.tmp
 .prettierrc
 CHANGELOG.md
+
+# Test report and results
+tests/TEST_REPORT.md
+tests/results.json
