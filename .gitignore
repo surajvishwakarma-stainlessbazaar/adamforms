@@ -1,0 +1,35 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors (shared .vscode settings are kept)
+.idea/
+*.swp
+*~
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Dependencies and tooling, if added later
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.cache/
+
+# Build output
+dist/
+build/
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Logs and temp files
+*.log
+*.tmp
