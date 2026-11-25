@@ -1,0 +1,452 @@
+{
+  "api": "https://stagingevolveapi.stainlessbazaar.com",
+  "ranAt": "2026-11-25T07:14:14.950Z",
+  "total": 85,
+  "failed": 5,
+  "results": [
+    {
+      "test": "Router: /?p=enquiry keeps token and UTMs",
+      "check": "lands on /lead/",
+      "ok": true
+    },
+    {
+      "test": "Router: /?p=enquiry keeps token and UTMs",
+      "check": "encrypted_token kept",
+      "ok": true
+    },
+    {
+      "test": "Router: /?p=enquiry keeps token and UTMs",
+      "check": "utm_source kept",
+      "ok": true
+    },
+    {
+      "test": "Router: /?p=enquiry keeps token and UTMs",
+      "check": "p removed",
+      "ok": true
+    },
+    {
+      "test": "Router: /?p=enquiry keeps token and UTMs",
+      "check": "GA script loaded once (router skipped)",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "1st call is POST /v1/token/decrypt",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "decrypt sends X-Form-Token header",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "decrypt body is {token, kind:'register'}",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "no GET /v1/member for register",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "mobile prefilled from token (+91 stripped)",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "mobile is read-only",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "pincode lookup fills city",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "pincode lookup fills state",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "POST /v1/register sent",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "register sends X-Form-Token + JSON",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "register body fields",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "mobile NOT sent in body",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "success screen shown",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "ref shows 'Received' for 202",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "GA page_location has no token",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "GA page_location keeps UTMs",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "GA sign_up event",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "no personal data in GA",
+      "ok": true
+    },
+    {
+      "test": "Register: happy path (decrypt -> prefill -> submit 202)",
+      "check": "no JS errors",
+      "ok": true
+    },
+    {
+      "test": "Register: no token in link",
+      "check": "no API call made",
+      "ok": true
+    },
+    {
+      "test": "Register: no token in link",
+      "check": "'no login' error shown",
+      "ok": true
+    },
+    {
+      "test": "Register: no token in link",
+      "check": "Submit disabled",
+      "ok": true
+    },
+    {
+      "test": "Register: no token in link",
+      "check": "GA form_error 401 at load",
+      "ok": true
+    },
+    {
+      "test": "Register: expired token (410)",
+      "check": "'expired' error shown",
+      "ok": true
+    },
+    {
+      "test": "Register: expired token (410)",
+      "check": "Submit disabled",
+      "ok": true
+    },
+    {
+      "test": "Register: validation blocks empty submit",
+      "check": "no POST sent",
+      "ok": true
+    },
+    {
+      "test": "Register: validation blocks empty submit",
+      "check": "business type error shown",
+      "ok": true
+    },
+    {
+      "test": "Register: validation blocks empty submit",
+      "check": "bad GSTIN error shown",
+      "ok": true
+    },
+    {
+      "test": "Register: server 422 with detail list, then retry",
+      "check": "422 message includes server detail",
+      "ok": true
+    },
+    {
+      "test": "Register: server 422 with detail list, then retry",
+      "check": "Submit re-enabled for retry",
+      "ok": true
+    },
+    {
+      "test": "Register: server 422 with detail list, then retry",
+      "check": "retry succeeds",
+      "ok": true
+    },
+    {
+      "test": "Register: network failure on submit",
+      "check": "'could not connect' shown",
+      "ok": true
+    },
+    {
+      "test": "Register: network failure on submit",
+      "check": "GA form_error status 0 at submit",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "call order: decrypt then member",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "decrypt kind is 'lead'",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "member query is ?kind=lead",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "member call sends X-Form-Token",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "'Sending as' shows member",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "spec prefills category (Sheets -> Sheets/Blanks)",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "spec prefills thickness 1.5 -> 1.50",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "spec prefills finish 2B",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "spec prefills qty 5 MT -> 5000 Kg",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "POST /v1/lead sent",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "body: names, not IDs",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "body: deliveryDays is a number",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "body: size numbers",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "body: no address when left blank",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "success ref from server",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "GA generate_lead event",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: happy path (decrypt -> member -> prefill -> submit 201)",
+      "check": "no JS errors",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: grade is sent to the API",
+      "check": "body includes the grade (e.g. '300')",
+      "ok": false,
+      "detail": [
+        "categoryName",
+        "productName",
+        "brandName",
+        "subGrade",
+        "deliveryDays",
+        "sizes"
+      ]
+    },
+    {
+      "test": "Enquiry: multiple sizes and partial address",
+      "check": "2nd size added",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: multiple sizes and partial address",
+      "check": "max 10 sizes",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: multiple sizes and partial address",
+      "check": "partial address blocked (pincode required)",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: multiple sizes and partial address",
+      "check": "2 sizes sent",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: multiple sizes and partial address",
+      "check": "2nd size unit inch, length 96",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: multiple sizes and partial address",
+      "check": "new address sent with city/state from pincode",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: token for another form (400)",
+      "check": "'not valid for this form' shown",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: token for another form (400)",
+      "check": "member not called",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: token for another form (400)",
+      "check": "Submit disabled",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: member lookup fails (401)",
+      "check": "error shown",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: member lookup fails (401)",
+      "check": "Submit disabled",
+      "ok": true
+    },
+    {
+      "test": "Enquiry: double click sends one POST",
+      "check": "only one POST /v1/lead",
+      "ok": true
+    },
+    {
+      "test": "Stock: happy path (decrypt -> member -> submit 201)",
+      "check": "decrypt kind is 'stock'",
+      "ok": true
+    },
+    {
+      "test": "Stock: happy path (decrypt -> member -> submit 201)",
+      "check": "member query is ?kind=stock",
+      "ok": true
+    },
+    {
+      "test": "Stock: happy path (decrypt -> member -> submit 201)",
+      "check": "empty spec leaves category blank",
+      "ok": true
+    },
+    {
+      "test": "Stock: happy path (decrypt -> member -> submit 201)",
+      "check": "POST /v1/stock sent",
+      "ok": true
+    },
+    {
+      "test": "Stock: happy path (decrypt -> member -> submit 201)",
+      "check": "body category + sizes",
+      "ok": true
+    },
+    {
+      "test": "Stock: happy path (decrypt -> member -> submit 201)",
+      "check": "body includes the 'listed until' date",
+      "ok": false,
+      "detail": [
+        "categoryName",
+        "productName",
+        "brandName",
+        "subGrade",
+        "deliveryDays",
+        "sizes"
+      ]
+    },
+    {
+      "test": "Stock: happy path (decrypt -> member -> submit 201)",
+      "check": "success ref from server",
+      "ok": true
+    },
+    {
+      "test": "Stock: happy path (decrypt -> member -> submit 201)",
+      "check": "GA add_stock event",
+      "ok": true
+    },
+    {
+      "test": "Stock: happy path (decrypt -> member -> submit 201)",
+      "check": "no JS errors",
+      "ok": true
+    },
+    {
+      "test": "Stock: expiry must be after today",
+      "check": "expiry error shown",
+      "ok": true
+    },
+    {
+      "test": "Stock: draft survives a page reload",
+      "check": "product name restored",
+      "ok": true
+    },
+    {
+      "test": "Stock: draft survives a page reload",
+      "check": "category restored",
+      "ok": false,
+      "detail": "(blank)"
+    },
+    {
+      "test": "Stock: draft survives a page reload",
+      "check": "brand restored",
+      "ok": false,
+      "detail": "not checked"
+    },
+    {
+      "test": "Stock: draft survives a page reload",
+      "check": "size price restored",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "test": "Demo mode: no API configured",
+      "check": "demo banner visible",
+      "ok": true
+    },
+    {
+      "test": "Demo mode: no API configured",
+      "check": "sample addresses shown",
+      "ok": true
+    },
+    {
+      "test": "Demo mode: no API configured",
+      "check": "no external calls",
+      "ok": true
+    }
+  ]
+}
