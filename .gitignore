@@ -33,5 +33,5 @@ build/
 # Logs and temp files
 *.log
 *.tmp
-*.prettierrc
-*.CHANGELOG.md
+.prettierrc
+CHANGELOG.md
