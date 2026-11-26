@@ -1,19 +1,8 @@
 var gst = /^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/,
   geo = null;
-function setMobile(v) {
-  v = String(v || "").replace(/\D/g, "").slice(-10);
-  var mo = F.elements.mobile;
-  if (isMob(v)) {
-    mo.value = v;
-    mo.readOnly = true;
-    $("h-mobile").textContent = "From your WhatsApp. This is your login number.";
-  } else $("h-mobile").textContent = "Enter your WhatsApp number.";
-}
-setMobile("");
-/* decrypt the register token: returns {kind:"register", mobile} (no member yet) */
-loadContext(function (ctx) {
-  setMobile(ctx.mobile);
-});
+/* decrypt the register token (no member yet). The mobile number lives only in the token;
+   the Form API reads it from there, so the form neither shows nor sends it. */
+loadContext(function () {});
 function dmsg(t, b) {
   var m = $("dmsg");
   m.textContent = t;
@@ -93,7 +82,6 @@ F.addEventListener("submit", function (ev) {
     ["company", has, "Enter your company name."],
     ["name", has, "Enter your name."],
     ["pincode", isPin, "Enter a 6-digit pincode."],
-    ["mobile", isMob, "Enter a valid 10-digit mobile number."],
     [
       "email",
       function (v) {
@@ -132,7 +120,6 @@ F.addEventListener("submit", function (ev) {
     ["Company", p.company],
     ["Type", p.businessType],
     ["You want to", p.intent],
-    ["Mobile", "+91" + g("mobile")],
     ["Pincode", p.pincode + (p.city ? " (" + p.city + ")" : "")],
   ], p);
 });
