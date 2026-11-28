@@ -1,82 +1,13 @@
-var gst = /^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/,
-  geo = null;
+var gst = /^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
 /* decrypt the register token (no member yet). The mobile number lives only in the token;
    the Form API reads it from there, so the form neither shows nor sends it. */
 loadContext(function () {});
-function dmsg(t, b) {
-  var m = $("dmsg");
-  m.textContent = t;
-  m.style.color = b ? "var(--er)" : "var(--mu)";
-}
-function pinLookup(pin) {
-  fetch("https://api.postalpincode.in/pincode/" + pin)
-    .then(function (r) {
-      return r.json();
-    })
-    .then(function (j) {
-      var o = j && j[0] && j[0].PostOffice && j[0].PostOffice[0];
-      if (o) {
-        F.elements.city.value = o.District || "";
-        F.elements.state.value = o.State || "";
-        save();
-      }
-    })
-    .catch(function () {});
-}
-$("pincode").addEventListener("input", function () {
-  if (/^\d{6}$/.test(this.value)) pinLookup(this.value);
-});
-$("det").onclick = function () {
-  var b = this;
-  if (!navigator.geolocation) {
-    dmsg("This phone cannot share its location. Type your pincode below.", 1);
-    return;
-  }
-  b.disabled = true;
-  dmsg("Finding your location...");
-  navigator.geolocation.getCurrentPosition(
-    function (p) {
-      geo = { lat: +p.coords.latitude.toFixed(5), lng: +p.coords.longitude.toFixed(5) };
-      fetch(
-        "https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&lat=" +
-          geo.lat +
-          "&lon=" +
-          geo.lng,
-      )
-        .then(function (r) {
-          return r.json();
-        })
-        .then(function (j) {
-          var a = j.address || {},
-            pc = String(a.postcode || "")
-              .replace(/\D/g, "")
-              .slice(0, 6);
-          if (pc.length === 6) {
-            F.elements.pincode.value = pc;
-            F.elements.city.value = a.city || a.town || a.village || a.state_district || "";
-            F.elements.state.value = a.state || "";
-            bad("pincode", "");
-            dmsg("Location found. Please check the pincode.");
-            save();
-            if (!F.elements.city.value) pinLookup(pc);
-          } else dmsg("Could not read a pincode from your location. Type it below.", 1);
-          b.disabled = false;
-        })
-        .catch(function () {
-          dmsg("Could not look up your address. Type your pincode below.", 1);
-          b.disabled = false;
-        });
-    },
-    function () {
-      dmsg("Location is off or blocked. Type your pincode below.", 1);
-      b.disabled = false;
-    },
-    { timeout: 12000, maximumAge: 600000 },
-  );
-};
+var ADDR = { pin: "pincode", city: "city", state: "state", det: "det", msg: "dmsg" };
+addrFlow(ADDR);
+addrWarm(ADDR);
 F.addEventListener("submit", function (ev) {
   ev.preventDefault();
-  var ok = run([
+  var ok = run([].concat([
     ["btype", has, "Choose your business type."],
     ["intent", has, "Choose one."],
     ["company", has, "Enter your company name."],
@@ -96,7 +27,7 @@ F.addEventListener("submit", function (ev) {
       },
       "This GSTIN does not look right. Check all 15 characters.",
     ],
-  ]);
+  ], addrCheck(ADDR, false)));
   if (ok && !F.elements.cons.checked) {
     bad("cons", "Please tick to continue.");
     $("e-cons").scrollIntoView({ block: "center" });

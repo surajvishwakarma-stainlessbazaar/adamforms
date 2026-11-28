@@ -75,3 +75,77 @@ function send(p,list,body){
   sbEvent(CONVERSION[FORM_KIND]||"form_submit",{http_status:String(r.status)});
   finish(p,list,j.ref?String(j.ref):(r.status===202?"Received":""))
  }).catch(function(e){b.disabled=false;showErr(apiError(e&&e.status,e&&e.j),e&&e.status,"submit")})}
+
+/* ---------- Address: pincode autofill, "Detect my location", Evolve city/state check ----------
+   Same flow as the Next.js app: postalpincode.in (pincode -> state + district),
+   Nominatim (GPS -> pincode + address line), Evolve master lists (state / city names the CRM accepts).
+   addrFlow({pin, city, state, line, det, msg}) wires one address block (ids of its inputs).
+   addrCheck(o, required) returns validation rules for run(). */
+var EVOLVE="https://evolveapi.stainlessbazaar.com",ADDR_MEMO={};
+function norm(s){return String(s||"").toLowerCase().replace(/&/g,"and").replace(/[^a-z]/g,"")}
+function evolveList(path){
+ if(ADDR_MEMO[path])return ADDR_MEMO[path];
+ var ck="sb_m"+path;
+ try{var c=JSON.parse(sessionStorage.getItem(ck)||"null");if(c)return ADDR_MEMO[path]=Promise.resolve(c)}catch(x){}
+ return ADDR_MEMO[path]=fetch(EVOLVE+path).then(function(r){return r.json()}).then(function(j){
+  var d=(j&&j.data||[]).filter(function(x){return !x.deleted});if(!d.length)throw 0;
+  try{sessionStorage.setItem(ck,JSON.stringify(d))}catch(x){}return d})
+ .catch(function(){delete ADDR_MEMO[path];return null})}
+var ADDR_LISTS={states:null,cities:{}};
+function findState(name){var n=norm(name),l=ADDR_LISTS.states;if(!l||!n)return null;
+ return l.filter(function(s){return norm(s.state)===n})[0]||null}
+function findCity(st,name){var n=norm(name),l=st&&ADDR_LISTS.cities[st.id];if(!l||!n)return null;
+ return l.filter(function(c){return norm(c.city)===n})[0]||null}
+function loadStates(){return evolveList("/master/state").then(function(d){if(d)ADDR_LISTS.states=d;return d})}
+function loadCities(st){if(!st)return Promise.resolve(null);
+ return evolveList("/master/city/"+st.id).then(function(d){if(d)ADDR_LISTS.cities[st.id]=d;return d})}
+/* pick the Evolve spelling of state + the first city candidate Evolve knows; falls back to the first candidate */
+function snapPlace(stateName,cands){
+ return loadStates().then(function(){var st=findState(stateName);
+  return loadCities(st).then(function(){var c=null;
+   for(var i=0;i<cands.length&&!c;i++)c=findCity(st,cands[i]);
+   return {state:st?st.state:stateName||"",city:c?c.city:(cands[0]||"")}})})}
+function pinPlace(pin){
+ return fetch("https://api.postalpincode.in/pincode/"+pin).then(function(r){return r.json()}).then(function(j){
+  var po=j&&j[0]&&j[0].PostOffice;if(!po||!po.length)return null;var c=[];
+  po.forEach(function(o){[o.District,o.Block,o.Region,o.Division,o.Name].forEach(function(v){v=String(v||"").replace(/\s+/g," ").trim();if(v&&c.indexOf(v)<0)c.push(v)})});
+  return snapPlace(po[0].State,c)})}
+function addrFlow(o){
+ var E=function(k){return F.elements[o[k]]},seq=0;
+ var msg=function(t,b){var m=o.msg&&$(o.msg);if(m){m.textContent=t;m.style.color=b?"var(--er)":"var(--mu)"}};
+ function fill(pin,extra){var my=++seq;
+  return pinPlace(pin).then(function(p){if(my!==seq||E("pin").value!==pin)return;
+   if(!p){if(extra&&extra.city){E("city").value=extra.city;E("state").value=extra.state||""}
+    else{bad(o.pin,"We could not find this pincode. Check it, or type your city and state.")}save();return}
+   E("city").value=p.city;E("state").value=p.state;bad(o.pin,"");bad(o.city,"");bad(o.state,"");save()})
+  .catch(function(){})}
+ if(SB.api)loadStates(); /* preview mode: no network calls until the member types */
+ E("state").addEventListener("change",function(){loadCities(findState(this.value))});
+ E("pin").addEventListener("input",function(){if(isPin(this.value))fill(this.value)});
+ var d=o.det&&$(o.det);if(!d)return;
+ d.onclick=function(){
+  if(!navigator.geolocation){msg("This phone cannot share its location. Type your pincode below.",1);return}
+  d.disabled=true;msg("Finding your location...");
+  navigator.geolocation.getCurrentPosition(function(p){
+   var la=+p.coords.latitude.toFixed(5),lo=+p.coords.longitude.toFixed(5);o.geo={lat:la,lng:lo};
+   fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=en&lat="+la+"&lon="+lo)
+   .then(function(r){return r.json()}).then(function(j){
+    var a=j.address||{},pc=String(a.postcode||"").replace(/\D/g,"").slice(0,6);
+    if(!isPin(pc)){msg("Could not read a pincode from your location. Type it below.",1);d.disabled=false;return}
+    E("pin").value=pc;bad(o.pin,"");
+    /* never overwrite an address the member already typed */
+    if(o.line&&!E("line").value.trim()){var ln=[a.house_number,a.road,a.neighbourhood||a.suburb].filter(Boolean).join(", ");if(ln)E("line").value=ln.slice(0,200)}
+    save();
+    return fill(pc,{city:a.city||a.town||a.village||a.state_district||"",state:a.state||""}).then(function(){
+     msg("Location found: pincode "+pc+". Change it if this is not the right address.");d.disabled=false})
+   }).catch(function(){msg("Could not look up your address. Type your pincode below.",1);d.disabled=false})
+  },function(){msg("Location is off or blocked. Type your pincode below.",1);d.disabled=false},
+  {timeout:12000,maximumAge:600000})}}
+/* rules for run(): city/state must be names Evolve knows (checked only once its lists have loaded) */
+function addrCheck(o,required){
+ var st=function(){return findState(g(o.state))};
+ return [
+  [o.state,function(v){if(!v)return !required;return !ADDR_LISTS.states||!!st()},"Enter a valid state name."],
+  [o.city,function(v){if(!v)return !required;var s=st();return !s||!ADDR_LISTS.cities[s.id]||!!findCity(s,v)},"Enter a valid city name (check the spelling)."]]}
+/* on load, fetch the city list for a restored state so the check works for drafts too */
+function addrWarm(o){if(!SB.api)return;loadStates().then(function(){loadCities(findState(g(o.state)))})}

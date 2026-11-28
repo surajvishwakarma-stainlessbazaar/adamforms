@@ -1160,7 +1160,7 @@ function renderAddr(list, note) {
   $("addrs").innerHTML = h;
   $("addrnote").textContent = note || "";
   if (!list.length) {
-    F.elements.addr.value = "new";
+    F.elements.addr.checked = true;
     $("na").hidden = false;
   } else if (list.length === 1) F.elements.addr.value = String(list[0].id);
 }
@@ -1178,22 +1178,9 @@ function loadAddr() {
   renderAddr([], ""); /* the Form API has no saved-address list: address is optional (blank = registered address) */
 }
 loadAddr();
-$("npin").addEventListener("input", function () {
-  var v = this.value;
-  if (/^\d{6}$/.test(v))
-    fetch("https://api.postalpincode.in/pincode/" + v)
-      .then(function (r) {
-        return r.json();
-      })
-      .then(function (j) {
-        var o = j && j[0] && j[0].PostOffice && j[0].PostOffice[0];
-        if (o) {
-          F.elements.ncity.value = o.District || "";
-          F.elements.nstate.value = o.State || "";
-        }
-      })
-      .catch(function () {});
-});
+var ADDR = { pin: "npin", city: "ncity", state: "nstate", line: "nline", det: "ndet", msg: "nmsg" };
+addrFlow(ADDR);
+addrWarm(ADDR);
 var ex = F.elements.expiry,
   today = new Date(Date.now() + 19800000).toISOString().slice(0, 10);
 if (ex) {
@@ -1259,6 +1246,7 @@ F.addEventListener("submit", function (ev) {
   /* address is optional in the API: check it only when the member starts typing one */
   var isNew = g("addr") === "new" && (g("nline") || g("npin") || g("ncity") || g("nstate"));
   if (isNew) rules.push(["nline", has, "Enter the address."], ["npin", isPin, "Enter a 6-digit pincode."]);
+  if (isNew) rules = rules.concat(addrCheck(ADDR, true)); /* city + state are needed, or the CRM uses the registered address instead */
   var ok = run(rules), sz = chkSizes();
   if (ok && !sz.ok) sz.first.scrollIntoView({ block: "center" });
   if (!ok || !sz.ok) return;
